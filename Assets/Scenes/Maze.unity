@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 894293950}
   - component: {fileID: 894293954}
   m_Layer: 0
-  m_Name: SizeManager (Floor)
+  m_Name: SizeManager (Floor)1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
