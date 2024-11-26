@@ -17,6 +17,6 @@ public class SizeManager : MonoBehaviour
 
     void OnValidate()
     {
-        transform.localScale = new Vector3(width, 1, height);
+        transform.localScale = new Vector3(width*2, 1, height*2);
     }
 }

@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 894293950}
   - component: {fileID: 894293954}
   m_Layer: 0
-  m_Name: SizeManager (Floor)1
+  m_Name: SizeManager (Floor)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -334,8 +334,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcfd18116cfd1d949a86706e1f8797ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 50
-  width: 50
+  height: 25
+  width: 25
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,8 +461,8 @@ MonoBehaviour:
   numberOfColumns: 25
   gridCellSize: 2
   obstacleEpsilon: 0.1
-  showGrid: 1
-  showObstacleBlocks: 1
+  showGrid: 0
+  showObstacleBlocks: 0
 --- !u!4 &1639329966
 Transform:
   m_ObjectHideFlags: 0
