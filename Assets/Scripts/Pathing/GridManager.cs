@@ -26,6 +26,9 @@ public class GridManager : MonoBehaviour {
     public bool showGrid = true;
     public bool showObstacleBlocks = true;
 
+    [SerializeField]
+    PathFinder pathFinder;
+
     public Node[,] nodes { get; set; }
 
     public Vector3 Origin {
@@ -46,7 +49,8 @@ public class GridManager : MonoBehaviour {
         for (int i = 0; i < numberOfColumns; i++) {
             for (int j = 0; j < numberOfRows; j++) {
                 Vector3 cellPos = GetGridCellCenter(i,j);
-                Node node = new(cellPos);
+                float cost = pathFinder.algorithms ? 0.0f : Mathf.Infinity; 
+                Node node = new(cellPos, cost);
 
 
                 var collisions = Physics.OverlapSphere(cellPos, gridCellSize / 2 - obstacleEpsilon, 1 << LayerMask.NameToLayer("Obstacles"));

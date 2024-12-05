@@ -7,10 +7,9 @@ public class Node {
     public bool isObstacle;
     public Node parent;
     public Vector3 position;
-
-    public Node(Vector3 pos) {
+    public Node(Vector3 pos, float cost) {
         fScore = 0.0f;
-        costSoFar = 0.0f;
+        costSoFar = cost;
         isObstacle = false;
         parent = null;
         position = pos;

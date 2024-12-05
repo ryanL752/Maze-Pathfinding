@@ -172,6 +172,7 @@ MonoBehaviour:
   obstacleEpsilon: 0.1
   showGrid: 1
   showObstacleBlocks: 0
+  pathFinder: {fileID: 520962676}
 --- !u!1 &133234237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,7 +1033,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 221985eaa1421054c8c849084b988ff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intervalTime: 1
+  intervalTime: 0.5
+  algorithms: 0
 --- !u!1 &759284221
 GameObject:
   m_ObjectHideFlags: 0

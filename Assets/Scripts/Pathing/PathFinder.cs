@@ -16,6 +16,8 @@ public class PathFinder : MonoBehaviour {
 
     int pathTo = 1;
 
+    public bool algorithms = false; 
+
     void Start() {
         objStartCube = GameObject.FindGameObjectWithTag("Start");
         objEndCube = GameObject.FindGameObjectWithTag("End");
@@ -49,16 +51,27 @@ public class PathFinder : MonoBehaviour {
         }
     }
 
-    void FindPath() {
+    void FindPath()
+    {
         startPos = objStartCube.transform;
         endPos = objEndCube.transform;
 
-        var (startColumn,startRow) = GridManager.instance.GetGridCoordinates(startPos.position);
+        var (startColumn, startRow) = GridManager.instance.GetGridCoordinates(startPos.position);
         var (goalColumn, goalRow) = GridManager.instance.GetGridCoordinates(endPos.position);
-        startNode = new Node(GridManager.instance.GetGridCellCenter(startColumn, startRow));
-        goalNode = new Node(GridManager.instance.GetGridCellCenter(goalColumn, goalRow));
+        //startNode = new Node(GridManager.instance.GetGridCellCenter(startColumn, startRow));
+        //goalNode = new Node(GridManager.instance.GetGridCellCenter(goalColumn, goalRow));
 
-        pathArray = new AStar().FindPath(startNode, goalNode);
+        if (algorithms) {
+            startNode = new Node(GridManager.instance.GetGridCellCenter(startColumn, startRow),0f);
+            goalNode = new Node(GridManager.instance.GetGridCellCenter(goalColumn, goalRow),0f);
+            pathArray = new AStar().FindPath(startNode, goalNode);
+        }
+        else
+        {
+            startNode = new Node(GridManager.instance.GetGridCellCenter(startColumn, startRow),Mathf.Infinity);
+            goalNode = new Node(GridManager.instance.GetGridCellCenter(goalColumn, goalRow),Mathf.Infinity);
+            pathArray = new Dijkstra().FindPath(startNode, goalNode);
+        }
     }
 
     void OnDrawGizmos() {
