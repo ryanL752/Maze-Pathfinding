@@ -9,14 +9,14 @@ public class PathFinder : MonoBehaviour {
 
     public List<Node> pathArray;
 
-    GameObject objStartCube, objEndCube;
+    public GameObject objStartCube, objEndCube;
 
-    private float elapsedTime = 0.0f;
+    public float elapsedTime = 0.0f;
     public float intervalTime = 1.0f; //Interval time between path finding
 
-    int pathTo = 1;
+    public int pathTo = 1,speed = 5;
 
-    public bool algorithms = false; 
+    public bool algorithms = false;
 
     void Start() {
         objStartCube = GameObject.FindGameObjectWithTag("Start");
@@ -27,6 +27,9 @@ public class PathFinder : MonoBehaviour {
     }
 
     void Update() {
+        if (TestManager.instance.stop)
+            return;
+
         elapsedTime += Time.deltaTime;
 
         if (elapsedTime >= intervalTime) {
@@ -36,7 +39,7 @@ public class PathFinder : MonoBehaviour {
 
         if(pathArray != null)
         {
-            if (pathTo != pathArray.Count)
+            if (pathTo < pathArray.Count)
             {
                 Node node = pathArray[pathTo];
                 if (Vector3.Distance(objStartCube.transform.position, node.position) < 0.5f)
@@ -45,21 +48,26 @@ public class PathFinder : MonoBehaviour {
                 }
                 else
                 {
-                    objStartCube.transform.position = Vector3.MoveTowards(objStartCube.transform.position, new Vector3(node.position.x, 0.5f, node.position.z), 5 * Time.deltaTime);
+                    objStartCube.transform.position = Vector3.MoveTowards(objStartCube.transform.position, new Vector3(node.position.x, 0.5f, node.position.z), speed * Time.deltaTime);
                 }
+            }
+            else
+            {
+                Timer.instance.SaveValues();
             }
         }
     }
 
-    void FindPath()
+    public void FindPath()
     {
+        objStartCube = GameObject.FindGameObjectWithTag("Start");
+        objEndCube = GameObject.FindGameObjectWithTag("End");
+
         startPos = objStartCube.transform;
         endPos = objEndCube.transform;
 
         var (startColumn, startRow) = GridManager.instance.GetGridCoordinates(startPos.position);
         var (goalColumn, goalRow) = GridManager.instance.GetGridCoordinates(endPos.position);
-        //startNode = new Node(GridManager.instance.GetGridCellCenter(startColumn, startRow));
-        //goalNode = new Node(GridManager.instance.GetGridCellCenter(goalColumn, goalRow));
 
         if (algorithms) {
             startNode = new Node(GridManager.instance.GetGridCellCenter(startColumn, startRow),0f);

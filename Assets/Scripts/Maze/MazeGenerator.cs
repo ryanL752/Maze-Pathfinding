@@ -6,8 +6,12 @@ using UnityEngine;
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField]
+    GameObject startPrefab, endPrefab;
+
+    [SerializeField]
     MazeCell mazeCellPrefab;
 
+    [SerializeField]
     int mazeWidth,mazeHeight;
 
     MazeCell[,] mazeGrid;
@@ -15,21 +19,31 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField]
     int offset = 1;
 
-    void Start()
-    {
-        mazeWidth = SizeManager.instance.width;
-        mazeHeight = SizeManager.instance.height;
-        mazeGrid = new MazeCell[ mazeWidth*offset,  mazeHeight*offset];
+    [SerializeField]
+    GameObject mapHolder;
 
-        for (int x = 0; x <  mazeWidth; x++)
+    void Awake()
+    {
+        NewMap();
+    }
+
+    Vector3 OpenCell(Vector3 foundNode)
+    {
+        bool open = false;
+        do
         {
-            for (int z = 0; z <  mazeHeight; z++)
+            int row = (2*Random.Range(0, mazeWidth));
+            int column = (2*Random.Range(0, mazeHeight));
+            Vector3 newNode = new Vector3(row, 0, column);
+            if (foundNode != newNode)
             {
-                mazeGrid[x* offset, z* offset] = Instantiate( mazeCellPrefab, new Vector3(x*offset, 0, z*offset), Quaternion.identity);
+                if (mazeGrid[row,column])
+                    return mazeGrid[row, column].unvisitedBlock.transform.position;
             }
         }
+        while (!open);
 
-        GenerateMaze(null, mazeGrid[0, 0]);
+        return new Vector3(-1,-1,-1);
     }
 
     private void GenerateMaze(MazeCell previousCell, MazeCell currentCell)
@@ -139,4 +153,42 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+    public void NewMap()
+    {
+        mazeGrid = new MazeCell[mazeWidth * offset, mazeHeight * offset];
+
+        for (int x = 0; x < mazeWidth; x++)
+        {
+            for (int z = 0; z < mazeHeight; z++)
+            {
+                mazeGrid[x * offset, z * offset] = Instantiate(mazeCellPrefab, new Vector3(x * offset, 0, z * offset), Quaternion.identity);
+                mazeGrid[x * offset, z * offset].gameObject.transform.SetParent(mapHolder.transform);
+            }
+        }
+
+        GenerateMaze(null, mazeGrid[0, 0]);
+        GridManager.instance.ComputeGrid();
+
+        Vector3 startPos = OpenCell(new Vector3(-1, -1, -1));
+        Vector3 endPos = OpenCell(startPos);
+
+        if (startPos.y != -1 && endPos.y != -1)
+        {
+            GameObject startObj = Instantiate(startPrefab);
+            GameObject endObj = Instantiate(endPrefab);
+
+            startObj.transform.position = startPos;
+            endObj.transform.position = endPos;
+
+            TestManager.instance.startPos = startPos;
+        }
+    }
+
+    public void DeleteMap()
+    {
+        for(int i = 0; i < mapHolder.transform.childCount; i++)
+        {
+            Destroy(mapHolder.transform.GetChild(i).gameObject);
+        }
+    }
 }

@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class AStar {
-
     private List<Node> CalculatePath(Node node) {
         List<Node> list = new();
         while (node != null) {

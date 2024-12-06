@@ -39,11 +39,7 @@ public class GridManager : MonoBehaviour {
         get { return gridCellSize; }
     }
 
-    void Awake() {
-        ComputeGrid();
-    }
-
-    void ComputeGrid() {
+    public void ComputeGrid() {
         nodes = new Node[numberOfColumns, numberOfRows];
 
         for (int i = 0; i < numberOfColumns; i++) {
